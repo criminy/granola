@@ -1,0 +1,200 @@
+<p><html>
+	<head>
+                <link rel="stylesheet" type="text/css" href="css/syntax.css" media="all"></link>
+		<link href="css/screen.css" rel="stylesheet" media="screen, projection" type="text/css"></link>
+	</head>
+	<body>
+
+ </p>
+<h1>granola-current</h1>
+<p><hr/>
+2010-04-23</p>
+<h2>What is it?</h2>
+<p>Granola is a java web framework inspired by a handful of existing Java and Python web frameworks.</p>
+<h2>How does it work?</h2>
+<p>Granola is a container agnostic library for writing web code. It is split into a few major sub-systems: </p>
+<ul>
+<li>a routing system</li>
+<li>an annotation and meta-programming API</li>
+<li>a model-view-controller API<ul>
+<li>Includes template processing, request and response objects. </li>
+</ul>
+</li>
+<li>a configuration system<ul>
+<li>Includes web.xml configuration.</li>
+</ul>
+</li>
+</ul>
+<p>Internally, granola is an HTTP routing component coupled with a simple annotation meta-programming system.
+The additional functionality is built on top of these two components.</p>
+<h2>Terminology</h2>
+<p>There is some specific terminology to define:</p>
+<ul>
+<li>view functions:<ul>
+<li>A view function is a function with a void return value and an arbitrary number of arguments, 
+all of which must have some granola-based annotation.</li>
+<li>NOTE: A view function must be non-static and public.</li>
+</ul>
+</li>
+<li>granola.mvc.*Controller:<ul>
+<li>The Controller interface and the extended utility classes are what exposes the underlying web API to the View functions.</li>
+<li>NOTE: Implementations of the Controller interface should not have non-function members.</li>
+</ul>
+</li>
+<li>application:<ul>
+<li>This is a JAR that consists of:</li>
+<li>A routing file (optional)</li>
+<li>Some user defined Controlles (optional)</li>
+<li>Non-web required code, or dependencies to other required code.</li>
+</ul>
+</li>
+<li>project:<ul>
+<li>This is a granola JAR or WAR that consists of:</li>
+<li>A routing file (mandetory)</li>
+<li>A project configuration (mandetory)</li>
+</ul>
+</li>
+</ul>
+<h3>NOTE</h3>
+<p>This setup of a single project which includes multiple applications is a method based on django to allow the creation of re-usable and portable applications.</p>
+<h2>Routing System</h2>
+<p>The routing system is system for mapping HTTP symantics to
+java classes. It is a simple file-based system where the routes of an application are described in a single line.</p>
+<p>The location of the routing file in an <code>application</code> is based on the application root packagename:</p>
+<div class="codehilite"><pre>src/main/resources/com/sample/granola/routing.r
+</pre></div>
+
+
+<p>The location of the routing file in a <code>project</code> is based on the configuration.</p>
+<p>Here is the syntax of the routing.r file:</p>
+<div class="codehilite"><pre><span class="c1"># optional comment</span>
+<span class="n">HTTP_METHOD</span> <span class="n">URL</span> <span class="n">CLASSNAME</span><span class="o">.</span><span class="n">METHODNAME</span> <span class="n">KEY</span><span class="o">=</span><span class="n">VALUE</span> <span class="n">KEY2</span><span class="o">=</span><span class="n">VALUE</span> <span class="n">KEY3</span><span class="o">=</span><span class="n">VALUE</span>
+</pre></div>
+
+
+<p>And here is a simple example: </p>
+<div class="codehilite"><pre><span class="n">GET</span> <span class="sr">/view/</span><span class="p">{</span><span class="n">name</span><span class="p">}</span> <span class="n">com</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">SomeClass</span><span class="o">.</span><span class="nb">read</span> <span class="n">someArgument</span><span class="o">=</span><span class="mi">1</span> <span class="n">someOtherArgument</span><span class="o">=</span><span class="n">asdf</span>
+</pre></div>
+
+
+<h2>Annotation API</h2>
+<p>The annotation API is a way to create custom annotations that apply to request and response objects.</p>
+<p>The main classes of the Annotation API are <code>granola.annotations.meta.ParameterAnnotation</code> and <code>granola.annotation.meta.ViewAnnotation</code>. These annotations are applied on user-defined annotations to provide extended functionality to their annotated objects. </p>
+<h3>granola.annotations.meta.ParameterAnnotation</h3>
+<p>This annotation takes in an implementation <code>granola.annotations.meta.ParameterProcessor</code>. This interface recieves information about the current view code and returns a <code>java.lang.Object</code> that will be injected into the annotated view parameter.</p>
+<p>Here is some real code from the granola mvc library:</p>
+<div class="codehilite"><pre><span class="nd">@ParameterAnnotation</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="n">RequestParameterImpl</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="nd">@Retention</span><span class="o">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="n">RequestParameter</span> <span class="o">{</span>
+    <span class="n">String</span> <span class="nf">value</span><span class="o">();</span> 
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RequestParameterImpl</span> <span class="kd">implements</span> <span class="n">ParameterProcessor</span><span class="o">&lt;</span><span class="n">RequestParameter</span><span class="o">&gt;{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">process</span><span class="o">(</span><span class="n">RequestParameter</span> <span class="n">p</span><span class="o">,</span><span class="n">Class</span> <span class="n">destinationType</span><span class="o">,</span><span class="n">Method</span> <span class="n">method</span><span class="o">,</span> <span class="n">Controller</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">runtimeAssertType</span><span class="o">(</span><span class="n">destinationType</span><span class="o">,</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="na">value</span><span class="o">();</span>
+        <span class="k">return</span> <span class="n">c</span><span class="o">.</span><span class="na">parameters</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+
+<p>And here is an example using this annotation:</p>
+<div class="codehilite"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Class1</span> <span class="kd">extends</span> <span class="n">StandardController</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">view</span><span class="o">(</span><span class="nd">@RequestParameter</span><span class="o">(</span><span class="s">&quot;parameter&quot;</span><span class="o">)</span> <span class="n">String</span> <span class="n">param</span><span class="o">)</span>
+    <span class="o">{</span>
+
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+
+<p>Here is some extended functionality using the <code>granola-fileupload</code> addon (which inclues the @FileUpload annotation):</p>
+<div class="codehilite"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FileUploadController</span> <span class="kd">extends</span> <span class="n">StandardController</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">submit</span><span class="o">(</span><span class="nd">@FileUpload</span><span class="o">(</span><span class="s">&quot;file&quot;</span><span class="o">)</span> <span class="n">FileItem</span> <span class="n">fileItem</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="c1">//now we can work with fileItem</span>
+
+        <span class="c1">// we are on a POST so let us redirect back to somewhere else</span>
+        <span class="n">response</span><span class="o">().</span><span class="na">redirect</span><span class="o">(</span><span class="n">AnotherPage</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;index&quot;</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+
+<p>And the route entry:</p>
+<div class="codehilite"><pre><span class="n">POST</span> <span class="o">/</span><span class="n">fileupload</span> <span class="n">FileUploadController</span><span class="o">.</span><span class="n">submit</span>
+</pre></div>
+
+
+<h3>granola.annotations.meta.ViewAnnotation</h3>
+<p>TODO: implement</p>
+<h2>The Model-View-Controller API</h2>
+<p>The model view controller API is a simple API surrounding the granola.mvc.*Controller classes.</p>
+<p>The simplest way to use the MVC api is to define a new class, extend <code>granola.mvc.StandardController</code> class,
+and use the API exposed by Controller inside of your view.</p>
+<div class="codehilite"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleController</span> <span class="kd">extends</span> <span class="n">StandardController</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">view</span><span class="o">(</span><span class="nd">@RequestParameter</span><span class="o">(</span><span class="s">&quot;parameter&quot;</span><span class="o">)</span> <span class="n">String</span> <span class="n">param</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="c1">//Get some request information</span>
+        <span class="n">request</span><span class="o">().</span><span class="na">header</span><span class="o">(</span><span class="s">&quot;HeaderName&quot;</span><span class="o">);</span>
+        <span class="c1">//Write a response</span>
+        <span class="n">response</span><span class="o">().</span><span class="na">body</span><span class="o">().</span><span class="na">write_string</span><span class="o">(</span><span class="s">&quot;Hello World&quot;</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+
+<p>This controller and view can be referenced in our routes.r file like this:</p>
+<div class="codehilite"><pre><span class="c1"># one example</span>
+<span class="n">GET</span> <span class="sr">/url/</span><span class="p">{</span><span class="n">parameter</span><span class="p">}</span><span class="o">.</span><span class="n">html</span> <span class="n">SimpleController</span><span class="o">.</span><span class="n">view</span>
+<span class="c1"># another example</span>
+<span class="n">GET</span> <span class="sr">/url/s</span><span class="n">tatic</span> <span class="n">SimpleController</span><span class="o">.</span><span class="n">view</span> <span class="n">parameter</span><span class="o">=</span><span class="n">StaticValue</span>
+</pre></div>
+
+
+<p>In the previous example, we could re-use the view in a couple of different contexts by 
+overriding the parameter value in our routes file.</p>
+<p>We can extend this method to provide customizable templates:</p>
+<div class="codehilite"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleTemplateController</span> <span class="kd">extends</span> <span class="n">StandardController</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">view</span><span class="o">(</span><span class="nd">@RequestParameter</span><span class="o">(</span><span class="s">&quot;template&quot;</span><span class="o">)</span> <span class="n">String</span> <span class="n">template</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">response</span><span class="o">().</span><span class="na">body</span><span class="o">().</span><span class="na">write_template</span><span class="o">(</span><span class="n">template</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+
+<p>And our routes file can be made to serve up a couple of templates, based on our need:</p>
+<div class="codehilite"><pre><span class="n">GET</span> <span class="o">/</span> <span class="n">SimpleTemplateController</span><span class="o">.</span><span class="n">view</span> <span class="n">template</span><span class="o">=</span><span class="nb">index</span><span class="o">.</span><span class="n">html</span>
+<span class="n">GET</span> <span class="o">/</span><span class="n">static</span> <span class="n">SimpleTemplateController</span><span class="o">.</span><span class="n">view</span> <span class="n">template</span><span class="o">=</span><span class="n">static</span><span class="o">.</span><span class="n">html</span>
+<span class="n">GET</span> <span class="o">/</span><span class="p">{</span><span class="n">template</span><span class="p">}</span> <span class="n">SimpleTemplateController</span><span class="o">.</span><span class="n">view</span>
+</pre></div>
+
+
+<h3>Generic Views</h3>
+<p>Generic controllers and views. Generic views are views that can be specified
+in a route file and given parameters. Generic views allow a programmer
+to abstract commonly used functionality to re-usable views. For example, a 
+programmer could write a generic view that worked with JPA:</p>
+<div class="codehilite"><pre><span class="n">GET</span> <span class="sr">/{entityName}/</span><span class="k">new</span> <span class="n">JPAGenericViews</span><span class="o">.</span><span class="k">new</span> <span class="n">template</span><span class="o">=</span><span class="n">custom</span><span class="o">/</span><span class="n">newEntity</span><span class="o">.</span><span class="n">html</span>
+<span class="n">POST</span> <span class="sr">/{entityName}/s</span><span class="n">ave</span> <span class="n">JPAGenericViews</span><span class="o">.</span><span class="n">save</span> 
+<span class="n">POST</span> <span class="sr">/{entityName}/</span><span class="p">{</span><span class="n">entityId</span><span class="p">}</span><span class="o">.</span><span class="n">html</span> <span class="n">JPAGenericViews</span><span class="o">.</span><span class="n">update</span>
+<span class="n">GET</span> <span class="sr">/{entityName}/</span><span class="p">{</span><span class="n">entityId</span><span class="p">}</span><span class="o">.</span><span class="n">html</span> <span class="n">JPAGenericViews</span><span class="o">.</span><span class="n">get</span>
+<span class="n">GET</span> <span class="sr">/{entityName}/</span><span class="n">list</span> <span class="n">JPAGenericViews</span><span class="o">.</span><span class="n">list</span> <span class="n">template</span><span class="o">=</span><span class="n">custom</span><span class="o">/</span><span class="n">entityList</span><span class="o">.</span><span class="n">html</span>
+<span class="n">GET</span> <span class="sr">/list JPAGenericViews.entityList template=custom/</span><span class="n">allEntityList</span><span class="o">.</span><span class="n">html</span>
+</pre></div>
+
+
+<p>This generic controller, <code>JPAGenericViews</code>, can use the <code>entityName</code> parameter and an injected <code>javax.persistence.EntityManager</code> JPA interface to read in information about the object being requested. Additionally, some views
+can be overridden with a custom template, so that this simple JPA Crud application can be integrated
+easily with existing applications and projects.</p>
+<h2>granola-servlet</h2>
+<p>granola-servlet is the servlet support code for granola, allowing a servlet
+container to use granola by using <code>granola.servlet.SimpleGranolaServlet</code> or
+<code>granola.servlet.ProjectGranolaServlet</code>.</p>
+<p>TODO: examples, documentation.</p>
+<p>	</body>
+</html>
+</p>

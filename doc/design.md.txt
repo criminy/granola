@@ -1,0 +1,200 @@
+$(head) 
+
+# granola-current #
+<hr/>
+$(date)
+## What is it? ##
+
+Granola is a java web framework inspired by a handful of existing Java and Python web frameworks.
+
+## How does it work? ##
+
+Granola is a container agnostic library for writing web code. It is split into a few major sub-systems: 
+
+  * a routing system
+  * an annotation and meta-programming API
+  * a model-view-controller API
+    * Includes template processing, request and response objects. 
+  * a configuration system
+    * Includes web.xml configuration.
+
+Internally, granola is an HTTP routing component coupled with a simple annotation meta-programming system.
+The additional functionality is built on top of these two components.
+
+## Terminology ##
+
+There is some specific terminology to define:
+
+  * view functions:
+    * A view function is a function with a void return value and an arbitrary number of arguments, 
+ 	all of which must have some granola-based annotation.
+    * NOTE: A view function must be non-static and public.
+  * granola.mvc.*Controller:
+    * The Controller interface and the extended utility classes are what exposes the underlying web API to the View functions.
+    * NOTE: Implementations of the Controller interface should not have non-function members.
+  * application:
+    * This is a JAR that consists of:
+      * A routing file (optional)
+      * Some user defined Controlles (optional)
+      * Non-web required code, or dependencies to other required code.
+  * project:
+    * This is a granola JAR or WAR that consists of:
+      * A routing file (mandetory)
+      * A project configuration (mandetory)
+
+### NOTE ###
+
+This setup of a single project which includes multiple applications is a method based on django to allow the creation of re-usable and portable applications.
+
+## Routing System ##
+
+The routing system is system for mapping HTTP symantics to
+java classes. It is a simple file-based system where the routes of an application are described in a single line.
+
+The location of the routing file in an `application` is based on the application root packagename:
+
+	:::text
+	src/main/resources/com/sample/granola/routing.r
+
+The location of the routing file in a `project` is based on the configuration.
+
+Here is the syntax of the routing.r file:
+
+	# optional comment
+	HTTP_METHOD URL CLASSNAME.METHODNAME KEY=VALUE KEY2=VALUE KEY3=VALUE
+
+And here is a simple example: 
+
+	GET /view/{name} com.sample.SomeClass.read someArgument=1 someOtherArgument=asdf
+
+## Annotation API ##
+
+The annotation API is a way to create custom annotations that apply to request and response objects.
+
+The main classes of the Annotation API are `granola.annotations.meta.ParameterAnnotation` and `granola.annotation.meta.ViewAnnotation`. These annotations are applied on user-defined annotations to provide extended functionality to their annotated objects. 
+
+### granola.annotations.meta.ParameterAnnotation ###
+
+This annotation takes in an implementation `granola.annotations.meta.ParameterProcessor`. This interface recieves information about the current view code and returns a `java.lang.Object` that will be injected into the annotated view parameter.
+
+Here is some real code from the granola mvc library:
+	
+	:::java
+	@ParameterAnnotation(value = RequestParameterImpl.class)
+	@Retention(RetentionPolicy.RUNTIME)
+	public @interface RequestParameter {
+		String value();	
+	}
+
+	public class RequestParameterImpl implements ParameterProcessor<RequestParameter>{
+
+		@Override
+		public Object process(RequestParameter p,Class destinationType,Method method, Controller c) {
+			runtimeAssertType(destinationType,String.class);
+			String name = p.value();
+			return c.parameters().get(name);
+		}
+	}
+
+And here is an example using this annotation:
+
+	:::java
+	public class Class1 extends StandardController {
+		public void view(@RequestParameter("parameter") String param)
+		{					
+		
+		}
+	}
+
+Here is some extended functionality using the `granola-fileupload` addon (which inclues the @FileUpload annotation):
+	
+	:::java
+	public class FileUploadController extends StandardController {
+		public void submit(@FileUpload("file") FileItem fileItem)
+		{
+			//now we can work with fileItem 
+		
+			// we are on a POST so let us redirect back to somewhere else
+			response().redirect(AnotherPage.class, "index");
+		}
+	}
+
+And the route entry:
+
+	POST /fileupload FileUploadController.submit
+
+### granola.annotations.meta.ViewAnnotation ###
+
+TODO: implement
+
+## The Model-View-Controller API ##
+
+The model view controller API is a simple API surrounding the granola.mvc.*Controller classes.
+
+The simplest way to use the MVC api is to define a new class, extend `granola.mvc.StandardController` class,
+and use the API exposed by Controller inside of your view.
+
+	:::java
+	public class SimpleController extends StandardController {
+		public void view(@RequestParameter("parameter") String param)
+		{
+			//Get some request information
+			request().header("HeaderName");
+			//Write a response
+			response().body().write_string("Hello World");
+		}
+	}
+
+This controller and view can be referenced in our routes.r file like this:
+
+	# one example
+	GET /url/{parameter}.html SimpleController.view
+	# another example
+	GET /url/static SimpleController.view parameter=StaticValue 
+
+
+In the previous example, we could re-use the view in a couple of different contexts by 
+overriding the parameter value in our routes file.
+
+We can extend this method to provide customizable templates:
+
+	:::java
+	public class SimpleTemplateController extends StandardController {
+		public void view(@RequestParameter("template") String template) {
+			response().body().write_template(template);
+		}
+	}
+
+And our routes file can be made to serve up a couple of templates, based on our need:
+
+	GET / SimpleTemplateController.view template=index.html
+	GET /static SimpleTemplateController.view template=static.html
+	GET /{template} SimpleTemplateController.view
+
+### Generic Views ###
+
+Generic controllers and views. Generic views are views that can be specified
+in a route file and given parameters. Generic views allow a programmer
+to abstract commonly used functionality to re-usable views. For example, a 
+programmer could write a generic view that worked with JPA:
+
+	GET /{entityName}/new JPAGenericViews.new template=custom/newEntity.html
+	POST /{entityName}/save JPAGenericViews.save 
+	POST /{entityName}/{entityId}.html JPAGenericViews.update
+	GET /{entityName}/{entityId}.html JPAGenericViews.get
+	GET /{entityName}/list JPAGenericViews.list template=custom/entityList.html
+	GET /list JPAGenericViews.entityList template=custom/allEntityList.html
+
+This generic controller, `JPAGenericViews`, can use the `entityName` parameter and an injected `javax.persistence.EntityManager` JPA interface to read in information about the object being requested. Additionally, some views
+can be overridden with a custom template, so that this simple JPA Crud application can be integrated
+easily with existing applications and projects.
+
+## granola-servlet ##
+	
+granola-servlet is the servlet support code for granola, allowing a servlet
+container to use granola by using `granola.servlet.SimpleGranolaServlet` or
+`granola.servlet.ProjectGranolaServlet`.
+
+TODO: examples, documentation.
+
+$(tail)

@@ -1,0 +1,7 @@
+<html>
+	<head>
+                <link rel="stylesheet" type="text/css" href="css/syntax.css" media="all"></link>
+		<link href="css/screen.css" rel="stylesheet" media="screen, projection" type="text/css"></link>
+	</head>
+	<body>
+
