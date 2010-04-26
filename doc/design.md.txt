@@ -1,8 +1,7 @@
 $(head) 
-
-# granola-current #
+# granola-current: overview 
 <hr/>
-$(date)
+Shawn Artrip - $(date) - <a href="http://dangerouslypersuasive.com/">dangerouslypersuasive.com</a>
 ## What is it? ##
 
 Granola is a java web framework inspired by a handful of existing Java and Python web frameworks.
@@ -16,7 +15,6 @@ Granola is a container agnostic library for writing web code. It is split into a
   * a model-view-controller API
     * Includes template processing, request and response objects. 
   * a configuration system
-    * Includes web.xml configuration.
 
 Internally, granola is an HTTP routing component coupled with a simple annotation meta-programming system.
 The additional functionality is built on top of these two components.
@@ -152,7 +150,6 @@ This controller and view can be referenced in our routes.r file like this:
 	# another example
 	GET /url/static SimpleController.view parameter=StaticValue 
 
-
 In the previous example, we could re-use the view in a couple of different contexts by 
 overriding the parameter value in our routes file.
 
@@ -167,6 +164,7 @@ We can extend this method to provide customizable templates:
 
 And our routes file can be made to serve up a couple of templates, based on our need:
 
+	# The same view used in three difference places, all with parameterized template arguments.
 	GET / SimpleTemplateController.view template=index.html
 	GET /static SimpleTemplateController.view template=static.html
 	GET /{template} SimpleTemplateController.view
@@ -193,8 +191,7 @@ easily with existing applications and projects.
 	
 granola-servlet is the servlet support code for granola, allowing a servlet
 container to use granola by using `granola.servlet.SimpleGranolaServlet` or
-`granola.servlet.ProjectGranolaServlet`.
+`granola.servlet.ModuleGranolaServlet`.
 
 TODO: examples, documentation.
-
 $(tail)

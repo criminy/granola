@@ -2,13 +2,27 @@
 	<head>
                 <link rel="stylesheet" type="text/css" href="css/syntax.css" media="all"></link>
 		<link href="css/screen.css" rel="stylesheet" media="screen, projection" type="text/css"></link>
+<style>
+	.navigation {
+		list-style-type: none;
+		background: none;
+		padding: 0px;
+		margin: 0;
+	}
+	.navigation li {
+		background: none;
+		display: inline;
+	}
+</style>
 	</head>
 	<body>
-
- </p>
-<h1>granola-current</h1>
+<ul class="navigation">
+	<li><a href="#">Home</a></li>
+	<li><a href="#">Projects</a></li>
+</ul>
+<h1>granola-current: overview</h1>
 <p><hr/>
-2010-04-23</p>
+Shawn Artrip - 2010-04-24 - <a href="http://dangerouslypersuasive.com/">dangerouslypersuasive.com</a></p>
 <h2>What is it?</h2>
 <p>Granola is a java web framework inspired by a handful of existing Java and Python web frameworks.</p>
 <h2>How does it work?</h2>
@@ -20,10 +34,7 @@
 <li>Includes template processing, request and response objects. </li>
 </ul>
 </li>
-<li>a configuration system<ul>
-<li>Includes web.xml configuration.</li>
-</ul>
-</li>
+<li>a configuration system</li>
 </ul>
 <p>Internally, granola is an HTTP routing component coupled with a simple annotation meta-programming system.
 The additional functionality is built on top of these two components.</p>
@@ -167,7 +178,8 @@ overriding the parameter value in our routes file.</p>
 
 
 <p>And our routes file can be made to serve up a couple of templates, based on our need:</p>
-<div class="codehilite"><pre><span class="n">GET</span> <span class="o">/</span> <span class="n">SimpleTemplateController</span><span class="o">.</span><span class="n">view</span> <span class="n">template</span><span class="o">=</span><span class="nb">index</span><span class="o">.</span><span class="n">html</span>
+<div class="codehilite"><pre><span class="c1"># The same view used in three difference places, all with parameterized template arguments.</span>
+<span class="n">GET</span> <span class="o">/</span> <span class="n">SimpleTemplateController</span><span class="o">.</span><span class="n">view</span> <span class="n">template</span><span class="o">=</span><span class="nb">index</span><span class="o">.</span><span class="n">html</span>
 <span class="n">GET</span> <span class="o">/</span><span class="n">static</span> <span class="n">SimpleTemplateController</span><span class="o">.</span><span class="n">view</span> <span class="n">template</span><span class="o">=</span><span class="n">static</span><span class="o">.</span><span class="n">html</span>
 <span class="n">GET</span> <span class="o">/</span><span class="p">{</span><span class="n">template</span><span class="p">}</span> <span class="n">SimpleTemplateController</span><span class="o">.</span><span class="n">view</span>
 </pre></div>
@@ -193,8 +205,8 @@ easily with existing applications and projects.</p>
 <h2>granola-servlet</h2>
 <p>granola-servlet is the servlet support code for granola, allowing a servlet
 container to use granola by using <code>granola.servlet.SimpleGranolaServlet</code> or
-<code>granola.servlet.ProjectGranolaServlet</code>.</p>
-<p>TODO: examples, documentation.</p>
-<p>	</body>
+<code>granola.servlet.ModuleGranolaServlet</code>.</p>
+<p>TODO: examples, documentation.
+	</body>
 </html>
 </p>

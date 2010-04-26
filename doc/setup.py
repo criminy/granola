@@ -3,12 +3,13 @@ import StringIO
 
 from datetime import date
 
+#TODO: use a search function to find all .md.txt files
 files = ["design.md.txt"]
 
 today = date.today()
 
-head = "".join(open("head.md.txt","r").readlines())
-tail = "".join(open("tail.md.txt","r").readlines())
+head = "".join(open("template/head.md.txt","r").readlines())
+tail = "".join(open("template/tail.md.txt","r").readlines())
 
 for x in files:
 
@@ -18,4 +19,7 @@ for x in files:
 	out = out.getvalue().replace("$(date)",today.strftime("%Y-%m-%d"))
 	out = out.replace("$(head)",head)
 	out = out.replace("$(tail)",tail)
+        print out
+	out = out.replace("<p></p>","")
+	out = out.replace("<p> </p>","") ## TODO: replace with regexp
 	open(x.replace("md.txt","html"),"w").write(out)
