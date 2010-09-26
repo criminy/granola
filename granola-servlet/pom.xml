@@ -4,13 +4,13 @@
 	<parent>
 		<artifactId>granola-parent</artifactId>
 		<groupId>granola</groupId>
-		<version>0.1-SNAPSHOT</version>
+		<version>0.2-SNAPSHOT</version>
 	</parent>
 
   <groupId>granola</groupId>
   <artifactId>granola-servlet</artifactId>
   <packaging>jar</packaging>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.2-SNAPSHOT</version>
   <name>granola-servlet</name>
   <url>http://maven.apache.org</url>
   <dependencies>
@@ -24,7 +24,7 @@
     <dependency>
       <groupId>granola</groupId>
       <artifactId>granola-core</artifactId>
-      <version>0.1-SNAPSHOT</version>
+      <version>0.2-SNAPSHOT</version>
     </dependency>
  
  </dependencies>

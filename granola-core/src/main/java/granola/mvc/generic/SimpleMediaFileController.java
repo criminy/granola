@@ -4,9 +4,17 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import granola.exceptions.NotFoundException;
 import granola.mvc.StandardController;
 import granola.mvc.annotations.Parameter;
 
+/**
+ * A controller for exposing static media files
+ * in a given directory
+ *
+ * Example:
+ *    GET /media/{file} granola.mvc.generic.SimpleMediaFileController.serve root=media
+ */
 public class SimpleMediaFileController
 	extends StandardController
 {
@@ -26,7 +34,7 @@ public class SimpleMediaFileController
 		
 	public void serve(
 		@Parameter("root") String root,
-		@Parameter("file") String str_file)
+		@Parameter("file") String str_file) throws NotFoundException
 	{
 		if(root == null) root = "";
 		
@@ -36,8 +44,7 @@ public class SimpleMediaFileController
 			.getResourceAsStream(str_file);
 		if(file_is == null)
 		{
-			this.response().set_response_code(404);
-			return;
+			throw new NotFoundException();
 		}
 		
 		this.response().set_header("Content-Type","text/plain");

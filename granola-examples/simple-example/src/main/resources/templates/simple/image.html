@@ -1,0 +1,23 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="{{ root }}/media/css/screen.css">
+		<title>granola-examples: - simple</title>
+	</head>
+	<body>
+		<h1>granola-examples: simple</h1>
+		<hr/>
+		{% if fruit.prev == True %}
+		   <a href="{{ fruit.prevCount }}">Prev</a>
+		{% else %}
+		   <span>Prev</span>	
+		{% endif %}
+		{% if fruit.next == True %}
+		   <a href="{{ fruit.nextCount }}">Next</a>
+		{% else %}
+		   <span>Next</span>	
+		{% endif %}
+		<hr/>
+		<img src="{{ root }}/media/img/{{ fruit.fruit }}"/>
+
+	</body>
+</html>

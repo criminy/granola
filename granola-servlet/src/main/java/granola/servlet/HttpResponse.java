@@ -1,15 +1,21 @@
 package granola.servlet;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import granola.mvc.Controller;
 import granola.mvc.Response;
 import granola.mvc.ResponseBody;
 
+/**
+ * Servlet implementation of the Response object.
+ * 
+ * @author criminy
+ *
+ */
 class HttpResponse implements Response {
 	
 	@Override
@@ -44,6 +50,17 @@ class HttpResponse implements Response {
 	public <T extends Controller> void redirect(Class<T> c, String viewName,
 			String arguments) {
 		//TODO: implements
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException("Redirect not implemented");
 	}
+
+	@Override
+	public void redirect(String url) {
+		try {
+			body.response.sendRedirect(url);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 }

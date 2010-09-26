@@ -9,8 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 
 import granola.mvc.Request;
 
-import static granola.internal.util.Iterators.enumeration_iter;
+import static granola.internal.util.iterators.Iterators.enumeration_iter;
 
+/**
+ * Servlet implementation of the Request object.
+ * 
+ * @author criminy
+ *
+ */
 class HttpRequest implements Request
 {
 	
@@ -39,7 +45,7 @@ class HttpRequest implements Request
 		this.headers = new java.util.HashMap<String, Object>();		
 		{ //setup headers
 			for(String headerName : enumeration_iter(String.class,this.request.getHeaderNames()))
-			{//TODO: support multiple header values
+			{//TODO: support multiple header values				
 				headers.put(headerName, this.request.getHeader(headerName));
 			}
 		}

@@ -11,14 +11,21 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import granola.mvc.ResponseBody;
-import granola.mvc.template.SimpleTemplateEngine;
+import granola.mvc.template.DjangoStyleTemplateEngine;
 import granola.mvc.template.TemplateEngine;
 
+/**
+ * Servlet implementation of the Response body.
+ * 
+ * @author criminy
+ *
+ */
 class HttpResponseBody implements ResponseBody {
 	
 	HttpServletResponse response;	
 	OutputStream responseOutputStream;
-	TemplateEngine engine = new SimpleTemplateEngine();
+	//TemplateEngine engine = new SimpleTemplateEngine();
+	TemplateEngine engine = new DjangoStyleTemplateEngine();
 	
 	@Override
 	public Map<String, Object> context() {

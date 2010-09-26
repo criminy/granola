@@ -4,15 +4,19 @@
 	<parent>
 		<artifactId>granola-parent</artifactId>
 		<groupId>granola</groupId>
-		<version>0.1-SNAPSHOT</version>
+		<version>0.2-SNAPSHOT</version>
 	</parent>
 
   <groupId>granola</groupId>
   <artifactId>granola-core</artifactId>
   <packaging>jar</packaging>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.2-SNAPSHOT</version>
   <name>granola-core</name>
   <dependencies>
-
+  	<dependency>
+	  <groupId>net.sheenobu.django.template</groupId>
+	  <artifactId>net.sheenobu.django.template</artifactId>
+	  <version>0.1-SNAPSHOT</version>
+	 </dependency>
   </dependencies>
 </project>

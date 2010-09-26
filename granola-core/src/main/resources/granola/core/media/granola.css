@@ -1,0 +1,101 @@
+			body,p,h1,h2,h3,h4,table,td,th,ul,ol,textarea,input
+			{
+				font-family:verdana,helvetica,arial,sans-serif;
+			}
+
+			body { 
+				margin: 0 auto;
+				background: #2E4D87;
+				padding-top: 20px;
+			}
+			#container {
+				margin: 0 auto;
+				width: 800px;
+				padding-left: 20px;
+				padding-right: 20px;
+				color: white;
+			}
+			a {
+				font-weight: bold;
+				text-decoration: none;
+				color:white;
+				margin-bottom: 10px;	
+			}
+			a:visited { 
+				color: white;
+			}
+
+img {
+border-spacing:0;
+border-collapse:collapse;
+display:inline;
+border-style:none;
+border-width:0;
+margin:0;
+padding:0;
+}
+
+
+	
+	h1 {
+		border-bottom: 3px solid white;
+		padding-bottom: 0;
+		margin-bottom:0;
+	}
+	
+	#sites {
+		
+		float: left;
+		border-left: 3px solid white;
+		padding-top: 10px;
+		margin-top: 0;
+		padding-left: 14px;
+	}
+
+	#sites li {
+		padding-left: 40px;
+		height: 32px;
+		padding-top: 5px;
+		background-position: left-center;
+		list-style-type: none;
+		background-repeat: no-repeat;
+	}
+
+	#stats {
+		margin-top: 0px;
+		display:inline;
+		float:right;
+		background: white;
+		color: black ;
+		padding: 20px;
+		padding-top: 10px;
+		/*border: 3px double #1874CD;*/
+	}
+	#stats ul {
+		list-style-type: none;
+		padding:0;
+		margin: 0;
+	}	
+	#stats li {
+		padding-top: 5px;
+   }
+	#stats li div {
+		text-align: right;
+		display:inline;
+	}
+	#stats label {
+      font-weight: bold;
+	}
+	#stats a {
+		font-weight: normal;
+		color:#CD2626;
+		text-decoration:underline;
+	}
+	#container {
+	}
+	h2 {
+		padding: 0;
+		margin: 0;
+		font-size: 12px;
+	}
+

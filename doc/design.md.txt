@@ -1,7 +1,6 @@
-$(head) 
 # granola-current: overview 
 <hr/>
-Shawn Artrip - $(date) - <a href="http://dangerouslypersuasive.com/">dangerouslypersuasive.com</a>
+$(date) - <a href="http://dangerouslypersuasive.com/">dangerouslypersuasive.com</a>
 ## What is it? ##
 
 Granola is a java web framework inspired by a handful of existing Java and Python web frameworks.
@@ -194,4 +193,3 @@ container to use granola by using `granola.servlet.SimpleGranolaServlet` or
 `granola.servlet.ModuleGranolaServlet`.
 
 TODO: examples, documentation.
-$(tail)

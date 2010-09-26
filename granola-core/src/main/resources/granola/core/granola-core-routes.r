@@ -1,0 +1,1 @@
+GET /granola-core-media/{file} granola.mvc.generic.SimpleMediaFileController.serve root=granola/core/media

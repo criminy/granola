@@ -25,3 +25,8 @@ The additional functionality is built on top of these two components.
     * The javax.servlet supporting classes
   * granola-examples:
     * Granola usage examples.
+
+
+## Requirements ##
+
+granola requires java 1.5, maven2, and http://github.com/criminy/django.templates.java to build and use.

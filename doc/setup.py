@@ -13,13 +13,11 @@ tail = "".join(open("template/tail.md.txt","r").readlines())
 
 for x in files:
 
-	out = StringIO.StringIO()
-	markdown.markdownFromFile(x,out,["codehilite"])
+   out = StringIO.StringIO()
+   markdown.markdownFromFile(x,out,["codehilite"])
 
-	out = out.getvalue().replace("$(date)",today.strftime("%Y-%m-%d"))
-	out = out.replace("$(head)",head)
-	out = out.replace("$(tail)",tail)
-        print out
-	out = out.replace("<p></p>","")
-	out = out.replace("<p> </p>","") ## TODO: replace with regexp
-	open(x.replace("md.txt","html"),"w").write(out)
+   out = out.getvalue().replace("$(date)",today.strftime("%Y-%m-%d"))
+   out = head + out + tail
+   out = out.replace("<p></p>","")
+   out = out.replace("<p> </p>","") ## TODO: replace with regexp
+   open(x.replace("md.txt","html"),"w").write(out)

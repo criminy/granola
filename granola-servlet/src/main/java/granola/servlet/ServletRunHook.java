@@ -9,8 +9,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import granola.mvc.Controller;
 import granola.mvc.StandardController;
-import granola.internal.routes.RunHook;
+import granola.internal.RunHook;
 
+/**
+ * Implementation of a runHook
+ * which wires in the java servlet-api specific
+ * fields into the decoupled core routing and MVC objects.
+ * 
+ * @author criminy
+ *
+ */
 class ServletRunHook implements RunHook
 {
 	OutputStream os;
@@ -44,6 +52,7 @@ class ServletRunHook implements RunHook
 	
 	@Override
 	public Controller preInvoke(Method m,Controller o, Object[] args) {
+		o.response().body().context().put("root",this.request.getContextPath());
 		return o;
 	}
 }

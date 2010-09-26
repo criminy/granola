@@ -10,6 +10,12 @@ import granola.mvc.Controller;
 import granola.mvc.Request;
 import granola.mvc.Response;
 
+/**
+ * Servlet implementation of the Controller object.
+ * 
+ * @author criminy
+ *
+ */
 class ServletController implements Controller{
 
 	public void setup(HttpServletRequest request, HttpServletResponse response,OutputStream responseOutputStream)
