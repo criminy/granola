@@ -1,0 +1,14 @@
+{% extends "templates/base.html" %}
+
+{% block content %}
+		<h1>granola-examples: list of fruits</h1>
+		<hr/>
+		<ul>
+		{% for x in fruits %}
+			<li>
+			<a href="fruits/{{ x.id }}">{{ x.name }}</a>
+			</li>
+		{% endfor %}
+		</ul>	
+		<hr/>
+{% endblock %}
