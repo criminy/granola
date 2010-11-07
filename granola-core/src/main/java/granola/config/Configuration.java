@@ -19,9 +19,7 @@ import java.util.Map;
  *
  */
 class FourOhFourError implements Callable<Controller>
-{
-
-	@Override
+{	
 	public void call(Controller t) {
 		t.response().set_response_code(404);
 		t.response().body().from_file("404.html");

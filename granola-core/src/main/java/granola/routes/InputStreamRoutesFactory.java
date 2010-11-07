@@ -10,7 +10,6 @@ import java.util.List;
 
 public class InputStreamRoutesFactory implements RouteFactory {
 
-	@Override
 	public List<Route> getRoutes(Object internalObject) {
 		
 		List<Route> routes = new LinkedList<Route>();

@@ -1,22 +1,38 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-	<parent>
-		<artifactId>granola-parent</artifactId>
-		<groupId>granola</groupId>
-		<version>0.2-SNAPSHOT</version>
-	</parent>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+   <parent>
+      <groupId>granola</groupId>
+      <artifactId>granola-parent</artifactId>
+      <version>0.5-SNAPSHOT</version>
+   </parent>
+	<groupId>granola</groupId>
+	<artifactId>granola-core</artifactId>
+	<packaging>jar</packaging>
+	<version>${project.parent.version}</version>
+	<name>granola-core</name>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>granola-template</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
 
-  <groupId>granola</groupId>
-  <artifactId>granola-core</artifactId>
-  <packaging>jar</packaging>
-  <version>0.2-SNAPSHOT</version>
-  <name>granola-core</name>
-  <dependencies>
-  	<dependency>
-	  <groupId>net.sheenobu.django.template</groupId>
-	  <artifactId>net.sheenobu.django.template</artifactId>
-	  <version>0.1-SNAPSHOT</version>
-	 </dependency>
-  </dependencies>
 </project>

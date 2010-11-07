@@ -10,21 +10,20 @@ class EnumerationIterable<T> implements Iterable<T>
 	{
 		Enumeration<T> enumeration;
 		
-		@Override
 		public boolean hasNext() {
 			return enumeration.hasMoreElements();
 		}
-		@Override
+		
 		public T next() {
 			return enumeration.nextElement();
 		}
-		@Override
+		
 		public void remove() {
 			throw new UnsupportedOperationException();
 		}
 		
 	}
-	@Override
+	
 	public Iterator<T> iterator() {
 		EnumerationIterator et = new EnumerationIterator();
 		et.enumeration = enumeration;

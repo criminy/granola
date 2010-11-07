@@ -18,12 +18,10 @@ import granola.mvc.ResponseBody;
  */
 class HttpResponse implements Response {
 	
-	@Override
 	public void set_response_code(int code) {
 		body.response.setStatus(code);
 	}
 	
-	@Override
 	public Object internal() {
 		return this.body.response;
 	}
@@ -37,23 +35,21 @@ class HttpResponse implements Response {
 		body.responseOutputStream = responseOutputStream;	
 	}
 	
-	@Override
 	public ResponseBody body() {
 		return body;
 	}
-	@Override
+	
 	public void set_header(String header,String value)
 	{
 		body.response.setHeader(header, value);
 	}
-	@Override
+	
 	public <T extends Controller> void redirect(Class<T> c, String viewName,
 			String arguments) {
 		//TODO: implements
 		throw new UnsupportedOperationException("Redirect not implemented");
 	}
 
-	@Override
 	public void redirect(String url) {
 		try {
 			body.response.sendRedirect(url);

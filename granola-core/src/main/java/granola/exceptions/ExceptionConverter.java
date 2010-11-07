@@ -16,7 +16,7 @@ public class ExceptionConverter<DEST_EXN> implements Function<DEST_EXN>
 		this.clazz = clazz;
 	}
 	
-	@Override
+
 	public DEST_EXN call(Object o) throws Throwable {
 		try {
 			return clazz.getConstructor(o.getClass()).newInstance(o);

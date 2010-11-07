@@ -13,8 +13,7 @@ class ZipIterable<T, E> implements Iterable<Pair<T,E>>{
 		first = _f;
 		second = _s;
 	}
-	
-	@Override
+		
 	public Iterator<Pair<T, E>> iterator() {
 		return new DoubleListIterator(first,second);
 	}
@@ -35,12 +34,11 @@ class ZipIterable<T, E> implements Iterable<Pair<T,E>>{
 		Iterator<T> firstIterator;
 		Iterator<E> secondIterator;
 		
-		@Override
+	
 		public boolean hasNext() {
 			return firstIterator.hasNext();
 		}
-
-		@Override
+	
 		public Pair<T, E> next() {
 			Pair<T,E> p = new Pair<T, E>();
 			p.setKey(firstIterator.next());
@@ -48,7 +46,6 @@ class ZipIterable<T, E> implements Iterable<Pair<T,E>>{
 			return p;
 		}
 
-		@Override
 		public void remove() {
 			throw new UnsupportedOperationException();
 		}

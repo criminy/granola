@@ -32,8 +32,7 @@ class Readline implements Iterable<String> {
 		
 		String line;
 		boolean readNext = true;
-		
-		@Override
+				
 		public boolean hasNext() {
 			try {
 				line = reader.readLine();
@@ -46,7 +45,6 @@ class Readline implements Iterable<String> {
 			return true;
 		}
 		
-		@Override
 		public String next() {
 			if(readNext)
 			{
@@ -59,15 +57,14 @@ class Readline implements Iterable<String> {
 			readNext = true;
 			return line;
 		}
-		@Override
+		
 		public void remove() {
 			throw new UnsupportedOperationException();
 		}
 	}
 	
 	
-	
-	@Override
+		
 	public Iterator<String> iterator() {
 		return new ReadlineIterator(this.reader);
 	}

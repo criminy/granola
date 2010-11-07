@@ -4,12 +4,13 @@
   <groupId>granola</groupId>
   <artifactId>granola-parent</artifactId>
   <packaging>pom</packaging>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.5-SNAPSHOT</version>
   <name>granola-parent</name>
   <modules>
     <module>granola-core</module>
     <module>granola-servlet</module>
     <module>granola-examples</module>
+    <module>granola-template</module>
   </modules>
   <build>
     <plugins>
@@ -22,4 +23,7 @@
       </plugin>
     </plugins>
   </build>
+   <scm>
+       <connection>scm:git:git://github.com/criminy/granola.git</connection>
+   </scm>
 </project>

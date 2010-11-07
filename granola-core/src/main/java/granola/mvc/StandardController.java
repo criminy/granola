@@ -18,17 +18,14 @@ public class StandardController implements Controller
 		controller = c;
 	}
 	
-	@Override
 	public Map<String, Object> parameters() {
 		return controller.parameters();
 	}
 
-	@Override
 	public Request request() {
 		return controller.request();
 	}
 
-	@Override
 	public Response response() {
 		return controller.response();
 	}

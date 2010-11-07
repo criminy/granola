@@ -21,12 +21,12 @@ class  MapIterable<T,E> implements Iterable<Pair<T,E>> {
 		Set<T> keys;
 		Collection<E> values;
 		Iterator<T> keyIterator;
-		@Override
+		
 		public boolean hasNext() {
 			return keyIterator.hasNext();
 		}
 
-		@Override
+		
 		public Pair<T, E> next() {
 			Pair<T,E> p = new Pair<T, E>();
 			p.setKey(keyIterator.next());
@@ -34,7 +34,7 @@ class  MapIterable<T,E> implements Iterable<Pair<T,E>> {
 			return p;
 		}
 
-		@Override
+		
 		public void remove() {
 			throw new UnsupportedOperationException();
 		}
@@ -43,7 +43,7 @@ class  MapIterable<T,E> implements Iterable<Pair<T,E>> {
 	
 	Map<T,E> map;
 	
-	@Override
+	
 	public Iterator<Pair<T, E>> iterator() {
 		return new MapIterator(map);
 	}

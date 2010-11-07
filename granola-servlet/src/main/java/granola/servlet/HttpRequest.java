@@ -25,12 +25,10 @@ class HttpRequest implements Request
 	Map<String,List<Object>> data;
 	InputStream requestInputStream;
 	
-	@Override
 	public Object internal() {
 		return request;
 	}
 	
-	@Override
 	public InputStream input() {
 		return requestInputStream;
 	}
@@ -62,12 +60,10 @@ class HttpRequest implements Request
 		}
 	}
 	
-	@Override
 	public Map<String, List<Object>> data() {
 		return this.data;
 	}
 	
-	@Override
 	public Map<String, Object> headers() {
 		return this.headers;
 	}

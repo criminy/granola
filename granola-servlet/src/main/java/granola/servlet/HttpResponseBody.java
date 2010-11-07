@@ -27,21 +27,21 @@ class HttpResponseBody implements ResponseBody {
 	//TemplateEngine engine = new SimpleTemplateEngine();
 	TemplateEngine engine = new DjangoStyleTemplateEngine();
 	
-	@Override
 	public Map<String, Object> context() {
 		return engine.getContext();
 	}
-	@Override
+	
 	public void from_file(String filename) {
 		
 		try {			
 			InputStream is = this.getClass().getClassLoader().getResourceAsStream(filename);			
-			engine.render(is, responseOutputStream);		
+			engine.render(is, responseOutputStream);	
+			responseOutputStream.flush();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}		
 	}
-	@Override
+	
 	public void from_stream(InputStream is){
 		
 		try {
@@ -54,7 +54,7 @@ class HttpResponseBody implements ResponseBody {
 			throw new RuntimeException(exn);
 		}
 	}
-	@Override
+	
 	public void from_string(String content) {		
 		try {
 			Writer wr = new OutputStreamWriter(responseOutputStream);
